@@ -8,15 +8,25 @@ class App extends React.Component {
   //  속성으로 변경
   state = {
     players: [
-      {name: 'LDK', id: 1},
-      {name: 'HONG', id: 2},
-      {name: 'KIM', id: 3},
-      {name: 'PARK', id: 4}
+      {name: 'LDK', id: 1, score: 30},
+      {name: 'HONG', id: 2, score: 40},
+      {name: 'KIM', id: 3, score: 50},
+      {name: 'PARK', id: 4, score: 60}
     ]
   }
 
   handleRemovePlayer = (id) => {
     this.setState(prevState => ({players: prevState.players.filter(item => item.id !== id)}))
+  }
+
+  handleChangeScore = (index, delta) => {
+    const players = this.state.players.map((player, idx) => {
+      if(idx === index) {
+        player.score = player.score + delta;
+      }
+      return player;
+    });
+    this.setState({players});
   }
 
   render() {
@@ -29,8 +39,8 @@ class App extends React.Component {
         {/* JSX를 return 하기때문에 값 세팅은 {} 표현식 사용 */}
         {/* 클래스 컴포넌트는 반드시 this */}
         {/* players값을 자식에게 */}
-        {this.state.players.map(item => <Player id={item.id} name={item.name} score={item.score} key={item.id.toString()}
-                                                removePlayer={this.handleRemovePlayer}/>)}
+        {this.state.players.map((item, index) => <Player id={item.id} name={item.name} score={item.score} key={item.id.toString()} index={index}
+                                                removePlayer={this.handleRemovePlayer} changeScore={this.handleChangeScore}/>)}
       </div>
     );
   }
